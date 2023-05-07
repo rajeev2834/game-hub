@@ -1,25 +1,16 @@
-import { AppBar, Toolbar, Typography, IconButton} from "@mui/material";
+import {HStack, Image, Text} from "@chakra-ui/react";
 import logo from "../assets/logo.webp";
+import ToggleDarkColor from "./ToggleDarkColor";
 
-interface Props{
-    icon: JSX.Element;
-    toggleDarkMode: () => void;
-}
 
-function NavBar({icon, toggleDarkMode}: Props) {
+function NavBar() {
 
     return(
-        <AppBar position="static">
-            <Toolbar>
-                <img src={logo} alt="logo" style={{width: 50, height: 50, marginRight: 10}}/>
-                <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                    My App
-                </Typography>
-                <IconButton color="inherit" onClick={toggleDarkMode}>
-                   {icon}
-                </IconButton>
-            </Toolbar>
-        </AppBar>
+        <HStack justifyContent={"space-between"} padding ={"10px"}>
+            <Image src={logo} alt="logo" boxSize='60px'/>
+            <Text>My Game App</Text>
+            <ToggleDarkColor/>
+        </HStack>
     );
 }
 

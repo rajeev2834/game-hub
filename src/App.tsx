@@ -1,44 +1,37 @@
-import { useState } from "react";
-import { Grid} from "@mui/material";
-import Hidden from "@mui/material/Hidden";
+import {useState} from 'react';
+import {Grid, GridItem, Show} from "@chakra-ui/react";
 
 import NavBar from "./components/NavBar";
-import {Brightness7, Brightness4} from "@mui/icons-material";
-import CustomTheme from "./components/custom-theme";
 import GameGrid from "./components/GameGrid";
+import GenreList from "./components/GenreList";
+import { Genre } from './hooks/useGenres';
+
 
 function App() {
-  const [darkMode, setDarkMode] = useState(false);
 
-  const handleToggleDarkMode = () => {
-    setDarkMode(!darkMode);
-  }
-
-  const icon = darkMode ? <Brightness7/> : <Brightness4/>;
+  const [selectedGenre, setSelectedGenre] = useState<Genre | null>(null);
 
   return (
-    <CustomTheme darkMode={darkMode}>
-        <Grid container>
-        {/* Menu */}
-        <Grid item xs={12}>
-          <NavBar toggleDarkMode={handleToggleDarkMode} icon={icon}/>
-        </Grid>
-      
-        {/* Aside and Main content */}
-        <Grid container>
-          <Hidden smDown>
-            <Grid item sm={3} md={3} lg={2} style={{ backgroundColor: 'green' }}>
-              {/* Aside */}
-              <div>Aside content</div>
-            </Grid>
-          </Hidden>
-          <Grid item xs={12} sm={9} md={9} lg={10} style={{ backgroundColor: 'orange' }}>
-            {/* Main */}
-            <GameGrid/>
-          </Grid>
-        </Grid>
-      </Grid>
-  </CustomTheme>
+   <Grid templateAreas={{
+    base: `"nav" "main"`,
+    lg: `"nav nav" "aside main"`
+   }}
+   templateColumns={{
+    base: '1fr',
+    lg: '200px 1fr'
+   }}
+   >
+    <GridItem area="nav"><NavBar /></GridItem>
+    <Show above="lg">
+    <GridItem area="aside" bg='gray' paddingX={4}>
+      <GenreList onSelectGenre = {(genre) => setSelectedGenre(genre)}/>
+    </GridItem>
+    </Show>
+    
+    <GridItem area="main" bg='orange'>
+      <GameGrid selectedGenre={selectedGenre} />
+    </GridItem>
+   </Grid>
   )
 }
 
