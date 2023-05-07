@@ -5,6 +5,7 @@ import Hidden from "@mui/material/Hidden";
 import NavBar from "./components/NavBar";
 import {Brightness7, Brightness4} from "@mui/icons-material";
 import CustomTheme from "./components/custom-theme";
+import GameGrid from "./components/GameGrid";
 
 function App() {
   const [darkMode, setDarkMode] = useState(false);
@@ -33,7 +34,7 @@ function App() {
           </Hidden>
           <Grid item xs={12} sm={9} md={9} lg={10} style={{ backgroundColor: 'orange' }}>
             {/* Main */}
-            <div>Main content</div>
+            <GameGrid/>
           </Grid>
         </Grid>
       </Grid>
