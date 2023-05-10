@@ -15,6 +15,7 @@ export interface Game {
         platform: Platform;
     }[];
     metacritic: number;
+    rating_top: number;
 }
 
 interface FetchGamesResponse {
@@ -22,11 +23,13 @@ interface FetchGamesResponse {
     results: Game[];
 }
 
-const useGames = (selectedGenre : Genre | null) => {
+const useGames = (selectedGenre : Genre | null, selectedPlatform : Platform | null, 
+    selectedSortOrder : string | null, searchInput : string | null) => {
     
         const [games, setGames] = useState<Game[]>([]);
         const [error, setError] = useState('');
         const [isloading, setLoading] = useState(false);
+    
     
         useEffect(() => {
             const controller = new AbortController();
@@ -34,6 +37,9 @@ const useGames = (selectedGenre : Genre | null) => {
             apiClient.get<FetchGamesResponse>('/games', {
                 params: {
                 genres: selectedGenre?.id,
+                platforms: selectedPlatform?.id,
+                ordering: selectedSortOrder,
+                search: searchInput,
             }, 
             signal: controller.signal})
                 .then((response) => {
@@ -48,7 +54,7 @@ const useGames = (selectedGenre : Genre | null) => {
                     });
 
             return () => controller.abort();
-        }, [selectedGenre?.id]);
+        }, [selectedGenre?.id, selectedPlatform?.id, selectedSortOrder, searchInput]);
 
         return { games, error, isloading};
 }

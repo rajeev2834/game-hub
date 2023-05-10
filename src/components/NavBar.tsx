@@ -1,14 +1,19 @@
 import {HStack, Image, Text} from "@chakra-ui/react";
 import logo from "../assets/logo.webp";
 import ToggleDarkColor from "./ToggleDarkColor";
+import SearchInput from "./SearchInput";
 
+interface Props{
+    onSearch: (value: string) => void;
+}
 
-function NavBar() {
+function NavBar({onSearch}: Props) {
 
     return(
-        <HStack justifyContent={"space-between"} padding ={"10px"}>
+        <HStack padding ={"10px"}>
             <Image src={logo} alt="logo" boxSize='60px'/>
-            <Text>My Game App</Text>
+            <Text whiteSpace={'nowrap'}>My Game App</Text>
+            <SearchInput onSearch={(value) => onSearch(value)}/>
             <ToggleDarkColor/>
         </HStack>
     );
