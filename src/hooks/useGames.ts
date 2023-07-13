@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { apiClient } from "../services/api-client";
 import { Genre } from "./useGenres";
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 
 export interface Platform{
     id: number;
@@ -21,27 +21,32 @@ export interface Game {
 
 interface FetchResponse<T> {
     count: number;
+    next: string | null;
     results: T[];
 }
 
 const useGames = (selectedGenre : Genre | null, selectedPlatform : Platform | null, 
     selectedSortOrder : string | null, searchInput : string | null) => {
 
-        return useQuery<FetchResponse<Game>, Error> ({
+        return useInfiniteQuery<FetchResponse<Game>, Error> ({
             queryKey: ['games', selectedGenre?.id, selectedPlatform?.id, selectedSortOrder, searchInput],
-            queryFn: () => {
+            queryFn: ({pageParam = 1}) => {
                 return apiClient.get<FetchResponse<Game>>('/games', {
                     params: {
                         genres: selectedGenre?.id,
                         parent_platforms: selectedPlatform?.id,
                         ordering: selectedSortOrder,
                         search: searchInput,
+                        page: pageParam
                     },
                 }).then((response) => {
                     return response.data;
                 });
             },
             staleTime: 1000 * 60 * 5,
+            getNextPageParam: (lastPage, allPages) => {
+                return lastPage.next ? allPages.length + 1 : undefined;
+            },
         });
         /*const [games, setGames] = useState<Game[]>([]);
         const [error, setError] = useState('');
