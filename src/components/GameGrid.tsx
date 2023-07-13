@@ -14,19 +14,19 @@ interface Props {
     searchInput: string | null;
 }
 const GameGrid = ({selectedGenre, selectedPlatform, selectedSortOrder, searchInput}: Props) => {
-    const {games, error, isloading} = useGames(selectedGenre, selectedPlatform, selectedSortOrder, searchInput);
+    const {data, error, isLoading} = useGames(selectedGenre, selectedPlatform, selectedSortOrder, searchInput);
     const skeletons = [1, 2, 3, 4, 5, 6]
 
 
     return (
         <>
-        {error && <Text>{error}</Text>}
+        {error && <Text>{error.message}</Text>}
             <SimpleGrid columns={{ sm:1, md:2, lg:3, xl:4}} spacing={6} padding={5}>
-                {isloading && skeletons.map(skeleton => 
+                {isLoading && skeletons.map(skeleton => 
                 <GameCardContainer key={skeleton}>
                     <GameCardSkeleton />
                 </GameCardContainer>)} 
-                {games.map(game =>
+                {data?.results.map(game =>
                 <GameCardContainer key={game.id}>
                     <GameCard game={game}/>
                 </GameCardContainer>

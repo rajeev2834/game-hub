@@ -1,5 +1,4 @@
-import { useState, useEffect} from "react";
-
+import { useQuery } from "@tanstack/react-query";
 import { apiClient } from "../services/api-client";
 
 export interface Genre{
@@ -15,8 +14,16 @@ interface FetchGenreResponse{
 }
 const useGeneres = () => {
 
+    return useQuery<FetchGenreResponse, Error>({
+        queryKey: ['genres'],
+        queryFn: () => {
+            return apiClient.get<FetchGenreResponse>('/genres')
+            .then((response) => response.data );
+        }, 
+        staleTime: 1000 * 60 * 5,
+    });
     
-    const [genres, setGenres] = useState<Genre[]>([]);
+    /*const [genres, setGenres] = useState<Genre[]>([]);
     const [error, setError] = useState('');
     const [isloading, setLoading] = useState(false);
 
@@ -38,7 +45,7 @@ const useGeneres = () => {
         return () => controller.abort();
     }, []);
 
-    return { genres, error, isloading};
+    return { genres, error, isloading};*/
 };
 
 export default useGeneres;
