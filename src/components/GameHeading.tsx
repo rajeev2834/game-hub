@@ -1,16 +1,17 @@
 import { Heading } from "@chakra-ui/react";
 import { Genre } from "../hooks/useGenres";
 import { Platform } from "../hooks/usePlatforms";
+import { useGenreStore, usePlatformStore } from "../hooks/store";
 
-interface Props{
-    selectedGenre: Genre | null;
-    selectedPlatform: Platform | null;
-}
 
-const GameHeading = ({selectedGenre, selectedPlatform}: Props) => {
+
+const GameHeading = () => {
+
+  const {genres}= useGenreStore();
+  const {platforms} = usePlatformStore();
 
   return (
-    <Heading as="h1" marginBottom={3} marginTop={2}>{selectedGenre?.name} {selectedPlatform?.name} Game</Heading>
+    <Heading as="h1" marginBottom={3} marginTop={2}>{genres?.name} {platforms?.name} Game</Heading>
   )
 }
 

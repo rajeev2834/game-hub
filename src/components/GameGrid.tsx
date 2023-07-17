@@ -1,22 +1,21 @@
 import { SimpleGrid, Text } from '@chakra-ui/react';
 import React from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import useGames, { Platform } from '../hooks/useGames';
-import { Genre } from '../hooks/useGenres';
+import useGames from '../hooks/useGames';
 import GameCard from './GameCard';
 import GameCardContainer from './GameCardContainer';
 import GameCardSkeleton from './GameCardSkeleton';
+import { useGenreStore, usePlatformStore, useSearchStore, useSortOrderStore } from '../hooks/store';
 
 
-interface Props {
-    selectedGenre: Genre | null;
-    selectedPlatform: Platform | null;
-    selectedSortOrder: string | null;
-    searchInput: string | null;
-}
-const GameGrid = ({selectedGenre, selectedPlatform, selectedSortOrder, searchInput}: Props) => {
+const GameGrid = () => {
+    const {search: searchInput} = useSearchStore();
+    const {genres} = useGenreStore();
+    const {platforms} = usePlatformStore();
+    const {sortSelector} = useSortOrderStore();
+
     const {data, error, isLoading, fetchNextPage, hasNextPage} = 
-        useGames(selectedGenre, selectedPlatform, selectedSortOrder, searchInput);
+        useGames(genres, platforms, sortSelector, searchInput);
     const skeletons = [1, 2, 3, 4, 5, 6]
 
     const fetchedGamesCount = data?.pages.reduce((total, page) => 

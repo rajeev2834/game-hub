@@ -3,17 +3,17 @@ import logo from "../assets/logo.webp";
 import ToggleDarkColor from "./ToggleDarkColor";
 import SearchInput from "./SearchInput";
 
-interface Props{
+/*interface Props{
     onSearch: (value: string) => void;
-}
+}*/
 
-function NavBar({onSearch}: Props) {
+function NavBar() {
 
     return(
         <HStack padding ={"10px"}>
             <Image src={logo} alt="logo" boxSize='60px'/>
             <Text whiteSpace={'nowrap'}>My Game App</Text>
-            <SearchInput onSearch={(value) => onSearch(value)}/>
+            <SearchInput/>
             <ToggleDarkColor/>
         </HStack>
     );
