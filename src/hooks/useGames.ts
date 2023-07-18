@@ -8,9 +8,18 @@ export interface Platform{
     name: string;
     slug: string;
 }
+
+export interface Publisher{
+    id: number;
+    name: string;
+}
 export interface Game {
     id: number;
     name: string;
+    slug: string;
+    description_raw: string;
+    genres : Genre[];
+    publishers: Publisher[];
     background_image: string;
     parent_platforms: {
         platform: Platform;
